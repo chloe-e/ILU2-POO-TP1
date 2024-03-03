@@ -1,6 +1,7 @@
 package villagegaulois;
 
 
+import exceptions.VillageSansChefException;
 import personnages.Chef;
 import personnages.Gaulois;
 
@@ -45,19 +46,24 @@ public class Village {
 		return null;
 	}
 
-	public String afficherVillageois() {
-		StringBuilder chaine = new StringBuilder();
-		if (nbVillageois < 1) {
-			chaine.append("Il n'y a encore aucun habitant au village du chef "
-					+ chef.getNom() + ".\n");
-		} else {
-			chaine.append("Au village du chef " + chef.getNom()
-					+ " vivent les légendaires gaulois :\n");
-			for (int i = 0; i < nbVillageois; i++) {
-				chaine.append("- " + villageois[i].getNom() + "\n");
-			}
+	public String afficherVillageois() throws VillageSansChefException {
+		if(chef == null) {
+			throw new VillageSansChefException("Ce village n'a pas de chef.");
 		}
-		return chaine.toString();
+		else {
+			StringBuilder chaine = new StringBuilder();
+			if (nbVillageois < 1) {
+				chaine.append("Il n'y a encore aucun habitant au village du chef "
+						+ chef.getNom() + ".\n");
+			} else {
+				chaine.append("Au village du chef " + chef.getNom()
+						+ " vivent les lÃ©gendaires gaulois :\n");
+				for (int i = 0; i < nbVillageois; i++) {
+					chaine.append("- " + villageois[i].getNom() + "\n");
+				}
+			}
+			return chaine.toString();
+		}
 	}
 	
 	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
@@ -71,7 +77,7 @@ public class Village {
 		else {
 			marche.utiliserEtal(indEtal,vendeur,produit,nbProduit);
 			chaine.append("Le vendeur " + vendeur.getNom() + " vend des " + produit 
-					+ " à l'étal " + indEtal + ".");
+					+ " Ã© l'Ã©tal " + indEtal + ".");
 		}
 		return chaine.toString();
 	}
@@ -90,11 +96,11 @@ public class Village {
 		}
 		
 		if(nbVendeurs == 0) {
-			chaine.append("Il n'y a pas de vendeurs de " + produit + " au marché.\n");
+			chaine.append("Il n'y a pas de vendeurs de " + produit + " au marchÃ©.\n");
 		}
 		else if(nbVendeurs == 1) {
 			chaine.append("Seulement " + nomVendeurs + " propose des " 
-					+ produit + " au marché.\n");
+					+ produit + " au marchÃ©.\n");
 		}
 		else {
 			chaine.append("Les vendeurs qui proposent des fleurs sont :\n");
@@ -116,7 +122,7 @@ public class Village {
 	
 	public String afficherMarche() {
 		StringBuilder chaine = new StringBuilder();
-		chaine.append("Le marché du village \"" + nom + "\" possède plusieurs étals :\n");
+		chaine.append("Le marchÃ© du village \"" + nom + "\" possÃ©de plusieurs Ã©tals :\n");
 		chaine.append(marche.afficherMarche());
 		return chaine.toString();
 	}
@@ -176,7 +182,7 @@ public class Village {
 				}
 			}
 			if(nbEtalsVides != 0) {
-				marche = marche + "Il reste " + nbEtalsVides + " etals non utlisés dans le marché.\n";
+				marche = marche + "Il reste " + nbEtalsVides + " etals non utlisÃ©s dans le marchÃ©.\n";
 			}
 			return marche;
 		}
